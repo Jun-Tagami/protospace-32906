@@ -1,5 +1,5 @@
 class PrototypesController < ApplicationController
-  before_action :set_prototype, only: [:edit, :update, :edit, :show ]
+  before_action :set_prototype, only: [:edit, :update, :show ]
   before_action :move_to_index, only: [:edit]
   before_action :authenticate_user!, except: [:index,:show ]
 
@@ -22,13 +22,10 @@ class PrototypesController < ApplicationController
 
   def show
     @comment = Comment.new
+    @comments = @prototype.comments.includes(:user)
   end
 
   def edit
-    unless @prototype.user == current_user.id
-      redirect_to action: :index
-    end
-    
   end
 
   def update
@@ -51,7 +48,7 @@ class PrototypesController < ApplicationController
   end
 
   def move_to_index
-    unless @prototype.user == current_user.id
+    unless @prototype.user.id == current_user.id
       redirect_to action: :index
     end
   end

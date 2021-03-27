@@ -6,12 +6,12 @@
       </p>
      <%#プロトタイプ詳細ページのプロトタイプ投稿者の部分から、ユーザー詳細ページへ遷移できるようにパスを設定した %>
       <%= link_to "by プロトタイプの投稿者", user_path(@prototype.user.id), class: :prototype__user %>
-       <% if user_signed_in? && current_user.id == @prototype.user_id %>
-        <div class="prototype__manage">
-          <%= link_to "編集する", edit_prototype_path(@prototype.id), class: :prototype__btn %>
-          <%= link_to "削除する", prototype_path(@prototype.id), method: :delete, class: :prototype__btn %>
-        </div>
-      <%end%>
+        <% if user_signed_in? && current_user.id == @prototype.user_id %>
+          <div class="prototype__manage">
+            <%= link_to "編集する", edit_prototype_path(@prototype.id), class: :prototype__btn %>
+            <%= link_to "削除する", prototype_path(@prototype.id), method: :delete, class: :prototype__btn %>
+          </div>
+        <%end%>
       <div class="prototype__image">
         <%= link_to image_tag(@prototype.image, class: :card__img ), root_path %>
       </div>
@@ -44,13 +44,16 @@
         <% end %>
         <%# // ログインしているユーザーには上記を表示する %>
         <ul class="comments_lists">
+          <% @comments.each do |comment| %>
           <%# 投稿に紐づくコメントを一覧する処理を記述する %>
             <li class="comments_list">
-              <%= " コメントのテキスト " %>
+              <%= comment.text %>
+              
               <%#各コメントの投稿者の部分から、ユーザー詳細ページへ遷移できるようにパスを設定した %>
-              <%= link_to "（ ユーザー名 ）", user_path(@prototype.user.id), class: :comment_user %>
+              <%= link_to comment.user.name, "/users/#{comment.user_id}" %>：
             </li>
           <%# // 投稿に紐づくコメントを一覧する処理を記述する %>
+          <% end %>
         </ul>
       </div>
     </div>
